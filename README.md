@@ -9,7 +9,7 @@ Tailor4Job is a command-line tool that helps candidates tailor their resume and 
 - **Modes**: Choose between a basic or detailed analysis. [ Optional Feature ] 
 - **Supports Multiple Files**: Accepts multiple input files such as resume, cover letter, and job description. [ Optional Feature ]
 - **Custom Model Support**: Specify the model to use for processing (e.g., `llama3-8b-8192`).  [ Optional Feature ]
-- **Custom Output File Format Support**: Specify the output file format, two options are provided i.e. .pdf and .docx . [ Optional Feature ]
+- **Custom Output File Format Support**: Specify the output file format, two options are provided i.e. .pdf and .docx .[ Optional Feature ]
 
 ## Installation
 
