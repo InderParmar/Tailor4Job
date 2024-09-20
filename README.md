@@ -6,9 +6,10 @@ Tailor4Job is a command-line tool that helps candidates tailor their resume and 
 - **Resume and Cover Letter Analysis**: Compare the resume and cover letter against the job description.
 - **Detailed Feedback**: Provides insights into the candidate’s strengths, weaknesses, and suggestions for improvement.
 - **ATS Compatibility Analysis**: Estimates the chances of the resume and cover letter passing an ATS system and offers keyword suggestions.
-- **Modes**: Choose between a basic or detailed analysis.
-- **Supports Multiple Files**: Accepts multiple input files such as resume, cover letter, and job description.
-- **Custom Model Support**: Specify the model to use for processing (e.g., `llama3-8b-8192`).
+- **Modes**: Choose between a basic or detailed analysis. [ Optional Feature ] 
+- **Supports Multiple Files**: Accepts multiple input files such as resume, cover letter, and job description. [ Optional Feature ]
+- **Custom Model Support**: Specify the model to use for processing (e.g., `llama3-8b-8192`).  [ Optional Feature ]
+- **Custom Output File Format Support**: Specify the output file format, two options are provided i.e. .pdf and .docx . [ Optional Feature ]
 
 ## Installation
 
