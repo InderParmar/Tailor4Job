@@ -188,10 +188,14 @@ python main.py --analysis_mode detailed --output detailed_analysis_output.pdf GE
 #### Viewing Output:
 Output can be written to a file or printed in the terminal. For example, to print the output to the terminal instead of saving it to a file:
 ```bash
-python main.py GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
+python main.py GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt  2>
 ```
 - [Download Example of Viewing Analysis on the Terminal](./Examples/OUTPUT/Terminal_Output/Screenshot_2024-09-20_5.15.10_PM.png)
-
+#### Viewing Output in stdout and error log in stderr:
+Output can be written to a file or printed in the terminal. For example, to print the output to the terminal instead of saving it to a file:
+```bash
+python main.py GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt  2> error.log
+```
 
 ## Contribution
 
