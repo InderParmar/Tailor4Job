@@ -196,6 +196,8 @@ Output can be written to a file or printed in the terminal. For example, to prin
 ```bash
 python main.py GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt  2> error.log
 ```
+## Video Link:
+https://seneca-my.sharepoint.com/:v:/g/personal/iparmar1_myseneca_ca/EdrPas6TI7tGgjshz-2ewuUB4nvDLPbiyuqxWQsrxLhA_Q?e=hjimb7
 
 ## Contribution
 
