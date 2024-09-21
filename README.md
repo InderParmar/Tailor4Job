@@ -131,7 +131,7 @@ To use the Tailor4Job tool effectively, you will need to provide three types of 
 
 ```bash
 python main.py --model llama3-8b-8192 --output tailored_resume.docx --analysis-mode detailed GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
-'''
+```
 ### Example Commands
 
 #### Basic Analysis Example in docx format:
