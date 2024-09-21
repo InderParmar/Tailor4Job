@@ -59,6 +59,25 @@ To check the version of the tool:
 python main.py --version
 ```
 
+### Display Help
+To see the available options:
+```bash
+python main.py --help
+```
+
+This would be the sample output 
+```bash
+Usage: main.py [OPTIONS] [FILES]...
+
+Options:
+  -v, --version                   Prints the tool’s name and current version.
+  -m, --model TEXT                Specify the model to use.
+  -o, --output TEXT               Specify an output filename.
+  -a, --analysis_mode [basic|detailed]
+                                  Choose between basic or detailed analysis.
+  --help                          Show this message and exit.
+```
+
 ### Inputs:
 - **Resume**: A `.docx` file containing the candidate's general resume.
 - **Cover Letter**: A `.docx` file containing the candidate's general cover letter.
