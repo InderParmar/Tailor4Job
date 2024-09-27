@@ -5,20 +5,13 @@ import json
 from docx import Document
 import pdfkit
 
-def process_files(files, api_key, model, mode, token_usage, provider):
+def process_files(files, api_key, model, mode, token_usage, provider_name):
     """
-    Process input files using the selected provider (Groq or OpenRouter) and return the tailored content and token info.
+    Process input files using either the Groq API or OpenRouter API, depending on the provider.
     """
-    # Initialize the provider's API URL
-    if provider == 'groq':
-        client = Groq(api_key=api_key)
-    elif provider == 'openrouter':
-        openrouter_url = "https://openrouter.ai/api/v1/chat/completions"
-    else:
-        raise ValueError(f"Unsupported provider: {provider}")
-
-    # Read content from input files
     content = ''
+    
+    # Read content from input files
     for file_path in files:
         if file_path.endswith('.docx'):
             # Read .docx file content
@@ -46,16 +39,16 @@ def process_files(files, api_key, model, mode, token_usage, provider):
              - What are the candidate's strong points for this job?
              - What are the candidate's weaknesses?
              - How can the candidate improve the Resume?
+            - What are the candidate's major mistakes that are being made while formatting the Resume? If there are any major mistakes, mention them here,
+                otherwise just ignore this section and jumpt to the Next section.
            - Compare the Cover Letter to the Job Description:
              - Is the cover letter aligned with the job requirements?
              - What improvements can be made?
 
         3. **Summary**:
-           - Estimate the percentage chance that this Resume and Cover Letter can pass the ATS system.
+           - Estimate the percentage chance that this Resume and Cover Letter can pass the ATS system for this job.
            - List any important keywords that can be added to the Resume and Cover Letter.
            - Suggest keywords that should be replaced with better alternatives.
-
-        Make sure each section is clearly labeled as mentioned above and structured as described.
         """
     else:
         prompt = """
@@ -66,8 +59,10 @@ def process_files(files, api_key, model, mode, token_usage, provider):
         2. An estimated percentage chance of the resume and cover letter passing an ATS system.
         """
 
-    # Call the selected provider's API to process the content
-    if provider == 'groq':
+    # Process content using the appropriate provider
+    if provider_name == 'groq':
+        # Initialize Groq client
+        client = Groq(api_key=api_key)
         response = client.chat.completions.create(
             messages=[
                 {
@@ -77,52 +72,31 @@ def process_files(files, api_key, model, mode, token_usage, provider):
             ],
             model=model,
         )
-    elif provider == 'openrouter':
-        headers = {
-            "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "https://your-app-url.com",  # Optional, you can update this
-            "X-Title": "Tailor4Job",  # Optional, your app name for ranking on OpenRouter
-        }
-        data = json.dumps({
-            "model": model,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": content
-                }
-            ]
-        })
+        tailored_content = response.choices[0].message.content
+        token_info = response.usage if token_usage else None
 
+    elif provider_name == 'openrouter':
+        # Make OpenRouter API request
         response = requests.post(
-            url=openrouter_url,
-            headers=headers,
-            data=data
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+            },
+            data=json.dumps({
+                "model": model,
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": content
+                    }
+                ]
+            })
         )
-
-        # Check for response status
         if response.status_code != 200:
             raise Exception(f"OpenRouter API request failed with status code {response.status_code}: {response.text}")
-
-        response_json = response.json()
-
-        # Ensure the response has the 'choices' field
-        if 'choices' not in response_json:
-            raise Exception(f"Unexpected response structure from OpenRouter API: {response_json}")
-
-        tailored_content = response_json['choices'][0]['message']['content']
-
-    # Print out the response structure to inspect usage
-    if 'usage' in response_json:
-        print(response_json['usage'])
-
-    # Extract token usage if flag is set
-    token_info = None
-    if token_usage and 'usage' in response_json:
-        token_info = {
-            'prompt_tokens': response_json['usage'].get('prompt_tokens', None),
-            'completion_tokens': response_json['usage'].get('completion_tokens', None),
-            'total_tokens': response_json['usage'].get('total_tokens', None),
-        }
+        result = response.json()
+        tailored_content = result['choices'][0]['message']['content']
+        token_info = result.get('usage', None) if token_usage else None
 
     return tailored_content, token_info
 
@@ -136,7 +110,7 @@ def generate_output(content, output_file):
         generate_pdf(content, output_file)
     else:
         raise Exception('Unsupported file format. Please use .docx or .pdf.')
- 
+
 def generate_docx(content, output_file):
     """
     Generate a .docx file with the given content.
@@ -144,7 +118,7 @@ def generate_docx(content, output_file):
     doc = Document()
     doc.add_paragraph(content)
     doc.save(output_file)
- 
+
 def generate_pdf(content, output_file):
     """
     Generate a .pdf file with the given content.
@@ -152,4 +126,3 @@ def generate_pdf(content, output_file):
     # Create a temporary HTML file to convert to PDF
     html_content = f'<html><body><p>{content}</p></body></html>'
     pdfkit.from_string(html_content, output_file)
- 
