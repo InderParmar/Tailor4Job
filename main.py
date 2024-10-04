@@ -11,18 +11,20 @@ GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 
 # Path to the TOML config file in the home directory
-CONFIG_FILE_PATH = os.path.join(os.path.expanduser("~"), ".tailor4job_config.toml")
-
 def load_config():
     """Load the TOML config file from the user's home directory if it exists."""
-    if os.path.exists(CONFIG_FILE_PATH):
-        try:
-            return toml.load(CONFIG_FILE_PATH)
-        except toml.TomlDecodeError:
-            click.echo(f"Error: Could not parse TOML config file at {CONFIG_FILE_PATH}", err=True)
-            sys.exit(1)
+    try:
+        return toml.load(".tailor4job_config.toml")
+    except FileNotFoundError:
+        # If the file doesn't exist, just return an empty dict
+        return {}
+    except toml.TomlDecodeError:
+        # If the file exists but is not a valid TOML file
+        click.echo(f"Error: Could not parse TOML config file at ~/.tailor4job_config.toml", err=True)
+        sys.exit(1)
     return {}
 
+#Changed default values to None as, it will help CLI to identify User values and config file values.
 @click.command()
 @click.option('--version', '-v', is_flag=True, help='Prints the tool’s name and current version.')
 @click.option('--model', '-m', default=None, help='Specify the model(s) to use, comma-separated for multiple models.')
@@ -31,6 +33,8 @@ def load_config():
 @click.option('--analysis_mode', '-a', type=click.Choice(['basic', 'detailed'], case_sensitive=False), default=None, help='Choose between basic or detailed analysis.')
 @click.option('--token-usage', '-t', is_flag=True, help='Show token usage information.')
 @click.argument('files', nargs=-1, type=click.Path(exists=True))
+
+
 def main(version, model, provider, output, files, analysis_mode, token_usage):
     # Load default config from the TOML file if available
     config = load_config()
@@ -49,6 +53,7 @@ def main(version, model, provider, output, files, analysis_mode, token_usage):
     model = model or config.get('model', 'llama3-8b-8192')  # Default to llama3-8b-8192 if not provided
     provider = provider or config.get('provider', 'groq')
     analysis_mode = analysis_mode or config.get('analysis_mode', 'detailed')
+    
 
     try:
         # Split the model and provider strings into lists

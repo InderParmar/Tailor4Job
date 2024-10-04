@@ -164,4 +164,4 @@ cython_debug/
 .env
 
 #Ignore Toml file
-.docbot-config.toml
+.tailor4job_config.toml
