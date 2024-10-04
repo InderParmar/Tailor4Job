@@ -1,6 +1,7 @@
 import click
 import os
 import sys
+import toml
 from utils import process_files, generate_output
 from dotenv import load_dotenv
 
@@ -9,22 +10,45 @@ load_dotenv()
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 
+# Path to the TOML config file in the home directory
+CONFIG_FILE_PATH = os.path.join(os.path.expanduser("~"), ".tailor4job_config.toml")
+
+def load_config():
+    """Load the TOML config file from the user's home directory if it exists."""
+    if os.path.exists(CONFIG_FILE_PATH):
+        try:
+            return toml.load(CONFIG_FILE_PATH)
+        except toml.TomlDecodeError:
+            click.echo(f"Error: Could not parse TOML config file at {CONFIG_FILE_PATH}", err=True)
+            sys.exit(1)
+    return {}
+
 @click.command()
 @click.option('--version', '-v', is_flag=True, help='Prints the tool’s name and current version.')
-@click.option('--model', '-m', default='llama3-8b-8192', help='Specify the model(s) to use, comma-separated for multiple models.')
-@click.option('--provider', '-p', default='groq', help='Specify the provider(s) to use, comma-separated for multiple providers.')
+@click.option('--model', '-m', default=None, help='Specify the model(s) to use, comma-separated for multiple models.')
+@click.option('--provider', '-p', default=None, help='Specify the provider(s) to use, comma-separated for multiple providers.')
 @click.option('--output', '-o', default=None, help='Specify an output filename (base name for multiple models).')
-@click.option('--analysis_mode', '-a', type=click.Choice(['basic', 'detailed'], case_sensitive=False), default='detailed', help='Choose between basic or detailed analysis.')
+@click.option('--analysis_mode', '-a', type=click.Choice(['basic', 'detailed'], case_sensitive=False), default=None, help='Choose between basic or detailed analysis.')
 @click.option('--token-usage', '-t', is_flag=True, help='Show token usage information.')
 @click.argument('files', nargs=-1, type=click.Path(exists=True))
 def main(version, model, provider, output, files, analysis_mode, token_usage):
+    # Load default config from the TOML file if available
+    config = load_config()
+
+    # If version is requested, print version and exit
     if version:
         click.echo("Tailor4Job Version 0.1", err=False)
         sys.exit(0)
 
+    # Ensure files are provided
     if not files:
         click.echo('No input files provided. Use --help for usage information.', err=True)
         sys.exit(1)
+
+    # Use values from config file if command-line args are not given.
+    model = model or config.get('model', 'llama3-8b-8192')  # Default to llama3-8b-8192 if not provided
+    provider = provider or config.get('provider', 'groq')
+    analysis_mode = analysis_mode or config.get('analysis_mode', 'detailed')
 
     try:
         # Split the model and provider strings into lists
