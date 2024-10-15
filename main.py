@@ -14,7 +14,7 @@ OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 def load_config():
     """Load the TOML config file from the user's home directory if it exists."""
     try:
-        return toml.load(".tailor4job_config.toml")
+        return toml.load(os.path.expanduser("~/.tailor4job_config.toml"))
     except FileNotFoundError:
         # If the file doesn't exist, just return an empty dict
         return {}
@@ -24,7 +24,6 @@ def load_config():
         sys.exit(1)
     return {}
 
-#Changed default values to None as, it will help CLI to identify User values and config file values.
 @click.command()
 @click.option('--version', '-v', is_flag=True, help='Prints the tool’s name and current version.')
 @click.option('--model', '-m', default=None, help='Specify the model(s) to use, comma-separated for multiple models.')
@@ -34,26 +33,28 @@ def load_config():
 @click.option('--token-usage', '-t', is_flag=True, help='Show token usage information.')
 @click.argument('files', nargs=-1, type=click.Path(exists=True))
 
-
 def main(version, model, provider, output, files, analysis_mode, token_usage):
     # Load default config from the TOML file if available
     config = load_config()
-
+    print(config)  # Debugging line to see the loaded config
     # If version is requested, print version and exit
     if version:
         click.echo("Tailor4Job Version 0.1", err=False)
         sys.exit(0)
 
-    # Ensure files are provided
+    # If files are not provided as arguments, use files from the config file
     if not files:
-        click.echo('No input files provided. Use --help for usage information.', err=True)
-        sys.exit(1)
+        files = config.get('input_files')
+        if not files:
+            click.echo('No input files provided. Use --help for usage information.', err=True)
+            sys.exit(1)
 
-    # Use values from config file if command-line args are not given.
-    model = model or config.get('model', 'llama3-8b-8192')  # Default to llama3-8b-8192 if not provided
-    provider = provider or config.get('provider', 'groq')
-    analysis_mode = analysis_mode or config.get('analysis_mode', 'detailed')
-    
+    # Use values from the config file if command-line args are not given
+    model = model or config.get('model')  # No default value, loads only from TOML or CLI
+    provider = provider or config.get('provider')  # No default value
+    analysis_mode = analysis_mode or config.get('analysis_mode')  # No default value
+    output = output or config.get('output')  # No default value
+
 
     try:
         # Split the model and provider strings into lists
@@ -86,10 +87,14 @@ def main(version, model, provider, output, files, analysis_mode, token_usage):
 
             # Generate a unique output filename for each model
             if output:
-                output_filename = f"{output}_{sanitized_model_name}.docx"
+                print('Output name processed successfully')
+
+                output_filename = f"{sanitized_model_name}_{output}"
                 generate_output(tailored_content, output_filename)
                 click.echo(f"Output saved to {output_filename}", err=True)
             else:
+                print('Output name not processed successfully')
+
                 click.echo(tailored_content)
 
             # Show token usage information if flag is set
