@@ -39,8 +39,6 @@ def process_files(files, api_key, model, mode, token_usage, provider_name):
              - What are the candidate's strong points for this job?
              - What are the candidate's weaknesses?
              - How can the candidate improve the Resume?
-            - What are the candidate's major mistakes that are being made while formatting the Resume? If there are any major mistakes, mention them here,
-                otherwise just ignore this section and jumpt to the Next section.
            - Compare the Cover Letter to the Job Description:
              - Is the cover letter aligned with the job requirements?
              - What improvements can be made?
