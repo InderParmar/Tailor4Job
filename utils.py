@@ -1,14 +1,14 @@
-import os
 from groq import Groq
 import requests
 import json
-from docx import Document
+from docx import Document 
+
 import pdfkit
 
 def process_files(files, api_key, model, mode, token_usage, provider_name):
     """
     Process input files using either the Groq API or OpenRouter API, depending on the provider.
-    """
+    """ 
     content = ''
     
     # Read content from input files
@@ -56,7 +56,7 @@ def process_files(files, api_key, model, mode, token_usage, provider_name):
         1. A brief introduction to the job and candidate.
         2. An estimated percentage chance of the resume and cover letter passing an ATS system.
         """
-
+    content = prompt + "\n" + content
     # Process content using the appropriate provider
     if provider_name == 'groq':
         # Initialize Groq client

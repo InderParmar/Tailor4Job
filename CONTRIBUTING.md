@@ -20,6 +20,7 @@ To start contributing, fork the repository and clone your forked version:
 ```bash
 git clone https://github.com/your-username/Tailor4Job
 cd Tailor4Job
+```
 
 ### Setting Up the Development Environment
 
@@ -40,7 +41,7 @@ cd Tailor4Job
      GROQ_API_KEY=your_actual_api_key_here
      ```
 
-### Source Code Formatting
+## Source Code Formatting
 
 We use **Ruff** as our automatic code formatter to ensure consistent code style across the project.
 
@@ -50,34 +51,48 @@ We use **Ruff** as our automatic code formatter to ensure consistent code style 
    ```
 
 2. **Run the Formatter**:
-   - To format the entire codebase, use the provided `format.sh` script:
+   - To format the entire codebase, use the provided `format.sh` script, which will automatically format all Python files:
      ```bash
      ./format.sh
      ```
-   - This script will automatically format all Python files in the project.
+   - The script uses `ruff check . --fix` to format all Python files in the project directory and subdirectories.
 
 3. **Configuration**:
-   - The configuration file `.ruff.toml` contains the formatting rules for Ruff.
-   - Files and directories that should not be formatted (like `env` or `__pycache__`) are specified in this file.
+   - Ruff settings are stored in `.ruff.toml`, where you can specify specific files or folders to exclude from formatting.
+   - The `.ruff.toml` file configuration includes:
+     ```toml
+     line-length = 88
+     exclude = ["env", "__pycache__", "build", "dist", ".venv"]
 
-### Linting
+     [lint]
+     select = ["E", "F"]
+     ignore = ["E501"]
+     ```
+   - If you need to add more directories that shouldn’t be formatted (like temporary or generated files), update the `exclude` field in `.ruff.toml` accordingly.
+
+## Linting
 
 Ruff is also used as a linter to check for common issues and enforce best practices.
 
 1. **Run the Linter**:
-   - You can run Ruff as a linter by executing:
+   - To run Ruff as a linter, execute:
      ```bash
-     ruff .
+     ./lint.sh
      ```
+   - This will check all Python files for code quality issues, such as unused variables, formatting errors, and syntax problems.
    - Fix any warnings or errors identified by Ruff to maintain code quality.
 
 2. **Ignoring Specific Lines or Files**:
-   - Sometimes, specific lines of code may need to be ignored by the linter. You can do this by adding a `# noqa` comment at the end of the line.
+   - If you need to ignore specific lines, add `# noqa` at the end of the line to bypass linting errors.
+   - For example:
+     ```python
+     unused_variable = "example"  # noqa: F841
+     ```
 
 3. **Documentation**:
-   - Instructions for using Ruff are included in this document for contributors who are unfamiliar with it.
+   - Instructions for using Ruff, both for formatting and linting, are included here to help contributors maintain consistent code quality.
 
-### Editor/IDE Integration
+## Editor/IDE Integration
 
 For an efficient development experience, integrate Ruff with your editor to automatically format and lint code on save.
 
@@ -95,7 +110,7 @@ For an efficient development experience, integrate Ruff with your editor to auto
 2. **Other Editors**:
    - Consult Ruff’s documentation to configure it in your preferred editor.
 
-### Running Tests
+## Running Tests
 
 To ensure your changes work as expected, run tests after making modifications.
 
@@ -104,7 +119,7 @@ To ensure your changes work as expected, run tests after making modifications.
 python -m unittest discover
 ```
 
-### Git Workflow
+## Git Workflow
 
 1. **Create a Branch**:
    - Create a new branch for your changes:
@@ -138,4 +153,5 @@ By contributing, you agree that your contributions will be licensed under the MI
 ---
 
 Thank you for helping improve Tailor4Job!
-```
+
+---

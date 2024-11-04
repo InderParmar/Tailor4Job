@@ -1,0 +1,6 @@
+line-length = 88
+exclude = ["env", "__pycache__", "build", "dist", ".venv"]
+
+[lint]
+select = ["E", "F"]
+ignore = ["E501"]

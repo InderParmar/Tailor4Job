@@ -26,7 +26,7 @@ def load_config():
     except FileNotFoundError:
         return {}
     except toml.TomlDecodeError:
-        click.echo(f"Error: Could not parse TOML config file at ~/.tailor4job_config.toml", err=True)
+        click.echo("Error: Could not parse TOML config file at ~/.tailor4job_config.toml", err=True)
         sys.exit(1)
 
 # Function to process model and provider pairs
