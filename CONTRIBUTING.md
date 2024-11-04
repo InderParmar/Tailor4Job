@@ -1,6 +1,6 @@
 # Contributing to Tailor4Job
 
-Thank you for considering contributing to Tailor4Job! This guide will help you set up the development environment, understand the structure of the project, and use tools like formatters and linters to maintain code quality.
+Thank you for considering contributing to Tailor4Job! This guide will help you set up the development environment, understand the structure of the project, and use tools like formatters, linters, and testing frameworks to maintain code quality.
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -59,16 +59,6 @@ We use **Ruff** as our automatic code formatter to ensure consistent code style 
 
 3. **Configuration**:
    - Ruff settings are stored in `.ruff.toml`, where you can specify specific files or folders to exclude from formatting.
-   - The `.ruff.toml` file configuration includes:
-     ```toml
-     line-length = 88
-     exclude = ["env", "__pycache__", "build", "dist", ".venv"]
-
-     [lint]
-     select = ["E", "F"]
-     ignore = ["E501"]
-     ```
-   - If you need to add more directories that shouldn’t be formatted (like temporary or generated files), update the `exclude` field in `.ruff.toml` accordingly.
 
 ## Linting
 
@@ -79,18 +69,10 @@ Ruff is also used as a linter to check for common issues and enforce best practi
      ```bash
      ./lint.sh
      ```
-   - This will check all Python files for code quality issues, such as unused variables, formatting errors, and syntax problems.
-   - Fix any warnings or errors identified by Ruff to maintain code quality.
+   - This will check all Python files for code quality issues.
 
 2. **Ignoring Specific Lines or Files**:
    - If you need to ignore specific lines, add `# noqa` at the end of the line to bypass linting errors.
-   - For example:
-     ```python
-     unused_variable = "example"  # noqa: F841
-     ```
-
-3. **Documentation**:
-   - Instructions for using Ruff, both for formatting and linting, are included here to help contributors maintain consistent code quality.
 
 ## Editor/IDE Integration
 
@@ -107,17 +89,52 @@ For an efficient development experience, integrate Ruff with your editor to auto
      }
      ```
 
-2. **Other Editors**:
-   - Consult Ruff’s documentation to configure it in your preferred editor.
-
 ## Running Tests
 
-To ensure your changes work as expected, run tests after making modifications.
+We use **pytest** as our testing framework, with **requests-mock** for mocking external API calls (e.g., the Groq API). Follow the steps below to set up and run tests effectively:
 
-```bash
-# Example test command (update with actual test framework if applicable)
-python -m unittest discover
-```
+1. **Set the PYTHONPATH**:
+   - Set the `PYTHONPATH` environment variable to the project’s root directory so `pytest` can locate all modules:
+     ```bash
+     export PYTHONPATH=$(pwd)
+     ```
+
+2. **Install Testing Dependencies**:
+   - Install `pytest` and `requests-mock` if they are not already installed:
+     ```bash
+     pip install pytest requests-mock
+     ```
+
+3. **Run Tests**:
+   - Run all tests using `pytest`:
+     ```bash
+     pytest
+     ```
+
+4. **Running a Specific Test**:
+   - To test specific files or functions, you can use:
+     ```bash
+     pytest path/to/test_file.py
+     ```
+   - For instance:
+     ```bash
+     pytest tests/test_groq_api.py
+     ```
+
+5. **Mocking API Requests**:
+   - We use `requests-mock` to mock responses from external APIs. This allows tests to simulate API responses without making real network calls. Tests that mock API responses are located in `tests/test_groq_api.py` and other files with `_api` in the name.
+   - For more information on `requests-mock`, consult the [requests-mock documentation](https://requests-mock.readthedocs.io).
+
+6. **Code Coverage** (Optional):
+   - To ensure thorough testing, install `pytest-cov`:
+     ```bash
+     pip install pytest-cov
+     ```
+   - Run tests with coverage:
+     ```bash
+     pytest --cov=tailor4job tests/
+     ```
+   - This generates a coverage report, helping you identify any untested parts of your code.
 
 ## Git Workflow
 
@@ -153,5 +170,3 @@ By contributing, you agree that your contributions will be licensed under the MI
 ---
 
 Thank you for helping improve Tailor4Job!
-
----

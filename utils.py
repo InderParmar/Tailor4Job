@@ -102,6 +102,9 @@ def generate_output(content, output_file):
     """
     Generate output file in either .docx or .pdf format.
     """
+    if content is None:
+        raise TypeError("Content must be a string, not NoneType.")
+    
     if output_file.endswith('.docx'):
         generate_docx(content, output_file)
     elif output_file.endswith('.pdf'):
