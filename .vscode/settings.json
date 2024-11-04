@@ -1,0 +1,6 @@
+{
+    "python.formatting.provider": "ruff",
+    "editor.formatOnSave": true,
+    "python.linting.ruffEnabled": true
+  }
+  
