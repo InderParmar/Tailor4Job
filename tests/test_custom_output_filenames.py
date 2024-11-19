@@ -3,6 +3,7 @@ import os
 from click.testing import CliRunner
 from main import main
 from docx import Document
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 CUSTOM_OUTPUT_DOCX = "llama3-8b-8192_custom_output_analysis.docx"

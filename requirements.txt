@@ -1,0 +1,7 @@
+click>=8.0.0
+requests>=2.25.0
+python-docx>=0.8.11
+pdfkit>=1.0.0
+python-dotenv>=1.0.0
+toml>=0.10.0
+groq==0.12.0
