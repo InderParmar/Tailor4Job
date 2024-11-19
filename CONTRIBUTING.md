@@ -22,7 +22,6 @@ To start contributing, fork the repository and clone your forked version:
 git clone https://github.com/your-username/Tailor4Job
 cd Tailor4Job
 ```
-
 ---
 
 ## Setting Up the Development Environment
