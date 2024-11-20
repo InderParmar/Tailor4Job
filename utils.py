@@ -1,3 +1,4 @@
+import os
 from groq import Groq
 import requests
 import json
@@ -5,21 +6,29 @@ from docx import Document
 
 import pdfkit
 
+
 def process_files(files, api_key, model, mode, token_usage, provider_name):
     """
     Process input files using either the Groq API or OpenRouter API, depending on the provider.
-    """ 
+    """
     content = ''
     
-    # Read content from input files
+    # Define supported file extensions
+    supported_extensions = ['.docx', '.txt']
+
+    # Read and validate content from input files
     for file_path in files:
-        if file_path.endswith('.docx'):
+        ext = os.path.splitext(file_path)[1].lower()
+        if ext not in supported_extensions:
+            raise Exception(f"Unsupported file format: {ext}. Supported formats are: {', '.join(supported_extensions)}")
+
+        if ext == '.docx':
             # Read .docx file content
             doc = Document(file_path)
             for para in doc.paragraphs:
                 content += para.text + '\n'
         else:
-            # Read other files assuming they are text-based
+            # Read text-based files
             with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
                 content += file.read() + '\n'
 
@@ -56,7 +65,9 @@ def process_files(files, api_key, model, mode, token_usage, provider_name):
         1. A brief introduction to the job and candidate.
         2. An estimated percentage chance of the resume and cover letter passing an ATS system.
         """
+    
     content = prompt + "\n" + content
+
     # Process content using the appropriate provider
     if provider_name == 'groq':
         # Initialize Groq client
@@ -95,7 +106,6 @@ def process_files(files, api_key, model, mode, token_usage, provider_name):
         result = response.json()
         tailored_content = result['choices'][0]['message']['content']
         token_info = result.get('usage', None) if token_usage else None
-
     return tailored_content, token_info
 
 def generate_output(content, output_file):
