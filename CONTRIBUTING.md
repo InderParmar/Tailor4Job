@@ -1,6 +1,8 @@
 # Contributing to Tailor4Job
 
-Thank you for considering contributing to Tailor4Job! This guide will help you set up the development environment, understand the structure of the project, and use tools like formatters, linters, and testing frameworks to maintain code quality.
+Thank you for considering contributing to Tailor4Job! This guide will help you set up the development environment, understand the structure of the project, and use tools like formatters, linters, and testing frameworks to maintain code quality. It also includes instructions for managing npm releases and improving user accessibility.
+
+---
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -10,6 +12,8 @@ Thank you for considering contributing to Tailor4Job! This guide will help you s
 - [Linting](#linting)
 - [Editor/IDE Integration](#editoride-integration)
 - [Running Tests](#running-tests)
+- [Managing npm Releases](#managing-npm-releases)
+- [Improving User Accessibility](#improving-user-accessibility)
 - [Git Workflow](#git-workflow)
 
 ---
@@ -22,6 +26,7 @@ To start contributing, fork the repository and clone your forked version:
 git clone https://github.com/your-username/Tailor4Job
 cd Tailor4Job
 ```
+
 ---
 
 ## Setting Up the Development Environment
@@ -142,6 +147,48 @@ Tests that involve external API calls are mocked using `requests-mock` to avoid 
 
 ---
 
+## Managing npm Releases
+
+To publish a new version of Tailor4Job on npm:
+1. **Increment the Version**:
+   Use [semantic versioning](https://semver.org/) and update the `version` field in `package.json`:
+   ```bash
+   npm version patch
+   ```
+2. **Test Locally**:
+   - Verify the new version works as expected before publishing.
+   - Run:
+     ```bash
+     npm install -g .
+     tailor4job --help
+     ```
+3. **Publish to npm**:
+   ```bash
+   npm publish
+   ```
+4. **Verify the Release**:
+   Ensure the package is live by checking:
+   ```bash
+   npm view tailor4job
+   ```
+
+---
+
+## Improving User Accessibility
+
+### Steps to Improve the User Experience:
+1. **Update Documentation**:
+   - Ensure `README.md` provides detailed setup and troubleshooting steps.
+   - Include instructions for obtaining and using the Groq API key.
+
+2. **Test on Different Platforms**:
+   - Test Tailor4Job on Windows, macOS, and Linux to identify potential compatibility issues.
+
+3. **Collect Feedback**:
+   - Encourage users to report issues or suggestions through GitHub issues.
+
+---
+
 ## Git Workflow
 
 1. **Create a Branch**:
@@ -172,4 +219,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ### Thank you for helping improve Tailor4Job!
 
-This updated guide includes the new CI setup and how contributors can use it effectively.
+This version of the `CONTRIBUTING.md` ensures contributors are equipped with the tools and knowledge to work on the project effectively while improving the user experience. Let me know if you need further adjustments! 🚀

@@ -2,6 +2,8 @@
 
 Tailor4Job is a command-line tool that helps candidates tailor their resume and cover letter to specific job descriptions. By leveraging the Groq API and a specified model, Tailor4Job analyzes your resume and cover letter in relation to a job description, providing valuable insights to optimize your application for better chances of passing Applicant Tracking System (ATS) screenings.
 
+---
+
 ## Features
 - **Resume and Cover Letter Analysis**: Compare your resume and cover letter with the job description to highlight relevant skills and experiences.
 - **Detailed Feedback**: Receive in-depth insights into your strengths, areas for improvement, and specific recommendations.
@@ -9,8 +11,45 @@ Tailor4Job is a command-line tool that helps candidates tailor their resume and 
 - **Customizable Models**: Use different processing models (e.g., `llama3-8b-8192`) for analysis. [Optional Feature]
 - **Flexible File Formats**: Choose between `.docx` or `.pdf` output formats for tailored documents. [Optional Feature]
 
+---
+
+## Prerequisites
+Ensure the following are installed on your system:
+1. **Python 3.7 or later**: [Download Python](https://www.python.org/downloads/)
+   - Check if Python is installed:
+     ```bash
+     python --version
+     ```
+   - Ensure pip (Python package manager) is installed:
+     ```bash
+     pip --version
+     ```
+2. **wkhtmltopdf**: Required for PDF generation.
+   - [Download and Install wkhtmltopdf](https://wkhtmltopdf.org/downloads.html)
+   - Verify installation:
+     ```bash
+     wkhtmltopdf --version
+     ```
+3. **Groq API Key**:
+   - You must sign up for the [Groq API](https://groq.com) to obtain your API key (details in the [Get an API Key](#get-an-api-key) section).
+
+---
+
 ## Installation
 
+### Option 1: From npm (Recommended)
+1. Install Tailor4Job globally using npm:
+   ```bash
+   npm install -g tailor4job
+   ```
+2. Test the installation:
+   ```bash
+   tailor4job --help
+   ```
+
+---
+
+### Option 2: From Source
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/InderParmar/Tailor4Job
@@ -37,44 +76,76 @@ Tailor4Job is a command-line tool that helps candidates tailor their resume and 
      GROQ_API_KEY=your_actual_api_key_here
      ```
 
+---
+
 ## Usage
 
-### Basic Analysis Command
-To perform a basic analysis, run:
+### Tailor4Job Commands
+Run Tailor4Job from the command line to analyze your resume and cover letter.
+
+#### Basic Analysis Command
 ```bash
-python main.py --model llama3-8b-8192 --output Output_Analysis.docx --analysis_mode basic GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
+tailor4job --model llama3-8b-8192 --output Output_Analysis.docx --analysis_mode basic GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
 ```
 
-### Detailed Analysis Command
-For a more comprehensive analysis:
+#### Detailed Analysis Command
 ```bash
-python main.py --model llama3-8b-8192 --output Output_Analysis.docx --analysis_mode detailed GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
+tailor4job --model llama3-8b-8192 --output Output_Analysis.docx --analysis_mode detailed GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
 ```
 
-### Display Version
-To check the current version of Tailor4Job:
+#### Check Version
 ```bash
-python main.py --version
+tailor4job --version
 ```
 
-### Display Help
-To see all available options:
+#### Display Help
 ```bash
-python main.py --help
+tailor4job --help
 ```
 
-### Command-Line Options
-- **`--model` or `-m`**: Specify the AI model for processing (default: `llama3-8b-8192`).
-  ```bash
-  python main.py --model custom-model file1.docx
-  ```
+---
 
-- **`--output` or `-o`**: Specify the filename for the output (supports `.docx` and `.pdf`).
-  ```bash
-  python main.py --output tailored_resume.docx file1.docx
-  ```
+## Get an API Key
+To use Tailor4Job, you’ll need an API key for the Groq API. Follow these steps:
 
-- **`--analysis_mode` or `-a`**: Choose analysis type (`basic` or `detailed`).
+1. **Sign up** for an account at [Groq API](https://groq.com).
+2. Navigate to the API section and **generate an API key**.
+3. Add the API key to your `.env` file in the project root:
+   ```bash
+   GROQ_API_KEY=your_actual_api_key_here
+   ```
+
+---
+
+## Troubleshooting
+
+1. **Python Not Found**:
+   - Ensure Python is installed and added to your system’s PATH.
+   - For Windows, re-install Python and select the "Add Python to PATH" option during setup.
+
+2. **pip Command Not Recognized**:
+   - Ensure pip is installed. Use the following command to install pip manually:
+     ```bash
+     python -m ensurepip --upgrade
+     ```
+
+3. **wkhtmltopdf Not Found**:
+   - Verify wkhtmltopdf is installed and added to PATH:
+     ```bash
+     wkhtmltopdf --version
+     ```
+
+4. **Command Not Found After npm Installation**:
+   - Ensure npm's global bin directory is in your PATH:
+     ```bash
+     npm config get prefix
+     ```
+     Add `/prefix/bin` to your PATH if necessary.
+
+5. **API Key Missing**:
+   - Ensure the `.env` file contains the correct API key. The tool will raise an error if the key is missing or invalid.
+
+---
 
 ## Inputs and Outputs
 
@@ -86,17 +157,7 @@ python main.py --help
 ### Output
 Tailored resume and cover letter analysis results are saved as either `.docx` or `.pdf` files based on your preference.
 
-## Example Commands
-
-### Basic Analysis Example (in `.docx` format):
-```bash
-python main.py --analysis_mode basic --output basic_analysis_output.docx GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
-```
-
-### Detailed Analysis Example (in `.pdf` format):
-```bash
-python main.py --analysis_mode detailed --output detailed_analysis_output.pdf GENERAL_RESUME.docx General_Cover_Letter.docx job_description.txt
-```
+---
 
 ## License
 
@@ -104,5 +165,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-Happy tailoring, and best of luck with your job applications!
-```
+Happy tailoring, and best of luck with your job applications! 🚀

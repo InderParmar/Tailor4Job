@@ -1,0 +1,40 @@
+{
+  "name": "tailor4job",
+  "version": "1.0.3",
+  "description": "A command-line tool that helps candidates tailor their resumes and cover letters to specific job descriptions. Tailor4Job analyzes the provided documents, evaluates strengths and weaknesses, and offers actionable feedback to improve alignment with job requirements. It provides insights into ATS compatibility, suggests keyword optimizations, and estimates the likelihood of passing ATS screening. Ideal for job seekers aiming to make their applications stand out.",
+  "main": "main.py",
+  "bin": {
+    "tailor4job": "main.py"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "pytest tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InderParmar/Tailor4Job.git"
+  },
+  "keywords": [
+    "resume",
+    "cover letter",
+    "job application",
+    "ATS",
+    "applicant tracking system",
+    "job description",
+    "resume optimization",
+    "career",
+    "job hunting",
+    "Groq API",
+    "tailoring",
+    "automation",
+    "Python"
+  ],
+  "author": "Inderpreet Singh Parmar <iparmar1@myseneca.ca> (https://github.com/InderParmar)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/InderParmar/Tailor4Job/issues"
+  },
+  "homepage": "https://github.com/InderParmar/Tailor4Job#readme"
+}
